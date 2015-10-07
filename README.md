@@ -7,6 +7,7 @@ A [middleman](http://middlemanapp.com/) deploy tool for invalidating resources c
 on common Content Delivery Networks (CDNs).
 
 * Cache invalidation of files on:
+  * [Akamai](http://www.akamai.com/)
   * [CloudFlare](https://cloudflare.com)
   * [MaxCDN](https://maxcdn.com)
   * [Fastly](https://fastly.com)
@@ -37,6 +38,11 @@ Edit your middleman `config.rb` and add the following. Specify either one or
 more CDN configurations.
 ```ruby
 activate :cdn do |cdn|
+  cdn.akamai = {
+    username: '...',                   # default ENV['AKAMAI_USERNAME']
+    password: 'you@example.com',       # default ENV['AKAMAI_PASSWORD']
+    base_url: 'http://example.com'     # default ENV['AKAMAI_BASE_URL']
+  }
   cdn.cloudflare = {
     client_api_key: '...',          # default ENV['CLOUDFLARE_CLIENT_API_KEY']
     email: 'you@example.com',       # default ENV['CLOUDFLARE_EMAIL']
@@ -99,6 +105,20 @@ when their respective `index.html` is included in the filter.
 
 Alternatively: If you're using `middleman-s3_sync` you can hook middleman-cdn into 
 it's build process. See the [instructions here](#invalidating-with-middleman-s3_sync).
+
+### Configuration: Akamai
+
+The `akamai` parameter contains the information specific to your Akamai
+account. Akamai invalidation works off URLs not filenames, and you must provide 
+a base url.
+
+| Parameter | Description |
+|:--------- |:----------- |
+| `username` | The username that you use to login to Akamai. |
+| `password` | The password that you use to login to Akamai. |
+| `base_url` | The base URL that the files are accessible at. |
+
+Akamai invalidations often take a few minutes.
 
 ### Configuration: CloudFlare
 

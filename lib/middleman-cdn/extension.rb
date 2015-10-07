@@ -13,6 +13,7 @@ module Middleman
     end
 
     class CDNExtension < Middleman::Extension
+      option :akamai, nil, 'Akamai options'
       option :cloudflare, nil, 'CloudFlare options'
       option :cloudfront, nil, 'CloudFront options'
       option :fastly, nil, 'Fastly options'
