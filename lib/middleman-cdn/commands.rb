@@ -3,9 +3,6 @@ require "middleman-cdn/extension"
 require "middleman-cdn/cdns/base.rb"
 require "middleman-cdn/cdns/akamai.rb"
 require "middleman-cdn/cdns/cloudflare.rb"
-require "middleman-cdn/cdns/cloudfront.rb"
-require "middleman-cdn/cdns/fastly.rb"
-require "middleman-cdn/cdns/maxcdn.rb"
 require "middleman-cdn/cdns/rackspace.rb"
 require "ansi/code"
 
@@ -87,9 +84,6 @@ module Middleman
         [
           AkamaiCDN,
           CloudFlareCDN,
-          CloudFrontCDN,
-          FastlyCDN,
-          MaxCDN,
           RackspaceCDN
         ]
       end

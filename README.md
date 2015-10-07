@@ -9,9 +9,6 @@ on common Content Delivery Networks (CDNs).
 * Cache invalidation of files on:
   * [Akamai](http://www.akamai.com/)
   * [CloudFlare](https://cloudflare.com)
-  * [MaxCDN](https://maxcdn.com)
-  * [Fastly](https://fastly.com)
-  * [Amazon CloudFront](https://aws.amazon.com/cloudfront/)
   * [Rackspace CloudFiles](http://www.rackspace.com/cloud/files/)
 * Select files for invalidation with regex.  
 * Automatically invalidate after build.
@@ -51,24 +48,6 @@ activate :cdn do |cdn|
       'http://example.com',
       'https://example.com',
     ]
-  }
-  cdn.maxcdn = {
-    alias: "...",                   # default ENV['MAXCDN_ALIAS']
-    consumer_key: "...",            # default ENV['MAXCDN_CONSUMER_KEY']
-    consumer_secret: "...",         # default ENV['MAXCDN_CONSUMER_SECRET']
-    zone_id: "...",
-  }
-  cdn.fastly = {
-    api_key: '...',                 # default ENV['FASTLY_API_KEY']
-    base_urls: [
-      'http://www.example.com',
-      'https://www.example.com'
-    ],
-  }
-  cdn.cloudfront = {
-    access_key_id: '...',           # default ENV['AWS_ACCESS_KEY_ID']
-    secret_access_key: '...',       # default ENV['AWS_SECRET_ACCESS_KEY']
-    distribution_id: '...'
   }
   cdn.rackspace = {
     username: "...",                # default ENV['RACKSPACE_USERNAME']
@@ -136,51 +115,6 @@ at.
 | `base_urls` | An array of base URLs that the files are accessible at. |
 
 CloudFlare invalidations often take a few seconds.
-
-### Configuration: MaxCDN
-
-The `maxcdn` parameter contains the information specific to your MaxCDN
-account. Your `alias` can be found on the API tab of your MaxCDN account page,
-and you'll need to create an `application` in your MaxCDN account which
-will provide you with API keys. The extension works by invalidating files
-in pull zones. Make sure you add your website as a pull zone.
-
-| Parameter | Description |
-|:--------- |:----------- |
-| `alias` | You can find this by logging into MaxCDN, going to your account page, and then going to the API tab and it will be down the bottom right. |
-| `consumer_key` | You can find this by logging into MaxCDN, going to your account page, and then going to the API tab and creating an application which will give you a key and secret. |
-| `secret_key` | You can find this by logging into MaxCDN, going to your account page, and then going to the API tab and creating an application which will give you a key and secret. |
-| `zone_id` | Each pull zone has a zone_id, you'll find this in your account. |
-
-MaxCDN invalidations often take a few seconds.
-
-### Configuration: Fastly
-
-The `fastly` parameter contains the information specific to your Fastly
-account. Fastly invalidation works off URLs not filenames, and you must provide
-a list of base urls to ensure we invalidate every URL that your files might be
-at.
-
-| Parameter | Description |
-|:--------- |:----------- |
-| `api_key` | You can find this by logging into Fastly, going to your account page and it will be on the left. |
-| `base_urls` | An array of base URLs that the files are accessible at. |
-
-Fastly invalidations often take a few seconds.
-
-### Configuration: CloudFront
-
-The `cloudfront` parameter contains the information specific to your AWS CloudFront
-account and which distribution files should be invalidated for.
-
-| Parameter | Description |
-|:--------- |:----------- |
-| `access_key_id` | AWS Access Key ID (generate in AWS Console IAM) |
-| `secret_access_key` | AWS Secret Access Key (generate in AWS Console IAM) |
-| `distribution_id` | The distribution ID on the CloudFront distribution. |
-
-CloudFront invalidations take up to 15 minutes. You can monitor the progress of
-the invalidation in your AWS Console.
 
 ### Configuration: Rackspace CloudFiles
 

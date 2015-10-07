@@ -5,6 +5,11 @@ require "active_support/core_ext/string"
 module Middleman
   module Cli
 	  class AkamaiClient
+	  	include HTTParty
+
+	  	base_uri "https://api.ccu.akamai.com"
+  		format :json
+
 	    def initialize(username, password)
 	      @auth = {:username => username, :password => password}
 	    end
@@ -18,9 +23,9 @@ module Middleman
 	    	when "201"
 	        # success
 	      when "400"
-	        error_message = response.headers["x-purge-failed-reason"]
+	        error_message = response.body["title"]
 	        raise "400, #{error_message}" if error_message.present?
-	        raise "400, an error occurred."
+	        raise "400, bad request. Often JSON in a purge request."
 	      when "403"
 	        raise "403, check the authorizations for the client and the objects being purged."
 	      when "415"
@@ -32,11 +37,12 @@ module Middleman
 	        raise "#{response.header.code}, an error occurred. #{error_message}".rstrip
 	      end
 	    end
+
 		  private
 
 			def api_post(path, content)
 				self.class.post(path, {
-		    	:headers => {'Accept' => 'application/json', 'Content-Type' => 'application/json'},
+		    	:headers => {'Accept' => 'application/json, application/api-problem+json', 'Content-Type' => 'application/json'},
 		    	:basic_auth => @auth,
 		    	:body => content.to_json
 		    })
@@ -44,7 +50,7 @@ module Middleman
 
 			def api_get(path, content)
 		    self.class.get(path, {
-	        :headers => {'Accept' => 'application/json', 'Content-Type' => 'application/json'},
+	        :headers => {'Accept' => 'application/json, application/api-problem+json', 'Content-Type' => 'application/json'},
 	        :basic_auth => @auth,
 	        :query => content
 		    })
